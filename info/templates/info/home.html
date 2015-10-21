@@ -6,26 +6,35 @@
 
 <div class="container">
     <div class="row">
-        <form method="post" action="{% url 'info:home' %}" style="width:30%;">
-            {% csrf_token %}
-            {% if form.non_field_errors %}
-                {% for key, value in form.non_field_errors.items %}
-                    {% for error in value %}
-                         {{ error }}
+        <div class="col-sm-6">
+            <form method="post" action="{% url 'info:home' %}" style="width:80%;">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for key, value in form.non_field_errors.items %}
+                        {% for error in value %}
+                             {{ error }}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endif %}
-
-            {% for field in form %}
-                {{ field.label }}
-                {% if field.errors %}
-                    {{ field.errors }}
                 {% endif %}
-                {{ field|addcss:"form-control" }}
-            {% endfor %}
-            <br />
-            <button type="submit" class="btn btn-success btn-sm">Save</button>
-        </form>
+
+                {% for field in form %}
+                    {{ field.label }}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                    {{ field|addcss:"form-control" }}
+                {% endfor %}
+                <br />
+                <button type="submit" class="btn btn-success btn-sm">Save</button>
+            </form>
+        </div>
+
+
+        <div class="col-sm-6">
+            <table id="detailsTable" style="width:80%; margin-top:20px;" class="table table-condensed table-striped">
+
+            </table>
+        </div>
     </div>
 </div>
 
@@ -36,23 +45,36 @@
         var auth_headers = {
             Authorization: 'Token ' + '{{ token }}'
         }
-        var user_ajax_obj = {
+        var validate_user = {
           url : user_url,
           dataType : 'json',
           headers: auth_headers,
           success : function(data) {
             console.log('authorized user returned');
-            for (var i=0; i < data.length; i++){
-                console.log(data[i]);
-            }
+            createTable(data);
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
             console.log('error returned from ' + user_url);
           }
         };
+
         $.ajax(
-          user_ajax_obj
+          validate_user
         );
+
+        function createTable(data){
+            var content = '';
+
+            $.each(data, function(i, item){
+                console.log(data[i]);
+                content += '<tr><td>' + data[i].name + '</td>' + '<td>' + data[i].create_dt + '</td></tr>';
+            });
+
+            $("#detailsTable").append(content);
+
+        }
+
+
     });
 </script>
 {% endblock %}
