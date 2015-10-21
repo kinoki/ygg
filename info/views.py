@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from core.shortcuts import reverse_redirect, get_object_or_None
 
 from info.forms import DetailForm
@@ -47,11 +50,12 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def detail_list(request):
 
     if request.method == 'GET':
         details = Detail.objects.all()
         print details
         serializer = DetailSerializer(details, many=True)
-        print serializer.data
         return JSONResponse(serializer.data)
