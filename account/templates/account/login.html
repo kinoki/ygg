@@ -3,7 +3,7 @@
 {% block content %}
 <div class='row'>
 	<div class='col-lg-6 col-lg-offset-3'>
-		<div class="panel panel-info">
+		<div class="panel panel-default">
 			<div class="panel-heading">
 		        <h3 class="panel-title">LOGIN</h3>
 		    </div>
@@ -37,6 +37,7 @@
     $("#loginButton").click(function(){
         var username = $("#id_username").val();
         var password = $("#id_password").val();
+
         $.ajax({
                 type: "POST",
                 url: "http://localhost:8000/api-token-auth/",
