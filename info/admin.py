@@ -3,6 +3,9 @@ from info.models import Detail
 
 
 class DetailAdmin(admin.ModelAdmin):
-    fields = ['name', 'create_dt']
+    model = Detail
+    list_display = ('name', 'create_dt')
+    fields = ['name']
+    readonly_fields = ('create_dt',)
 
 admin.site.register(Detail, DetailAdmin)
