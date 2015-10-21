@@ -1,8 +1,13 @@
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render
 from core.shortcuts import reverse_redirect, get_object_or_None
+
 from info.forms import DetailForm
 from info.models import Detail
+
+from rest_framework.renderers import JSONRenderer
+from info.serializers import DetailSerializer
 
 
 def home(request):
@@ -33,3 +38,20 @@ def view_detail(request, detail_id):
         messages.warning(request, "unable to locate detail")
         return reverse_redirect('info:home')
 
+
+class JSONResponse(HttpResponse):
+
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+def detail_list(request):
+
+    if request.method == 'GET':
+        details = Detail.objects.all()
+        print details
+        serializer = DetailSerializer(details, many=True)
+        print serializer.data
+        return JSONResponse(serializer.data)
