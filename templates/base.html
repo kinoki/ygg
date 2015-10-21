@@ -1,0 +1,36 @@
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<div class="row">
+		<div class="small-12 columns">
+	    {% block messages %}
+	        {% if messages %}
+	            <div>
+		            <ul class='messages'>
+		            {% for message in messages %}
+		                <li{% if message.tags %} class="{{message.tags}} message_item" {% endif %}>{{ message }}</li>
+		            {% endfor %}
+		            </ul>
+	            </div>
+	        {% endif %}
+
+	    {% endblock %}
+    	</div><!--./small-12-->
+ 	</div><!--./row-->
+
+    <section class="large-12 columns content" style='padding: 30px;'>
+	    {% block content %}
+	    {% endblock %}
+	</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>
