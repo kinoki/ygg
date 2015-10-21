@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='row'>
+	<div class='col-lg-6 col-lg-offset-3'>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+		        <h3 class="panel-title">LOGIN</h3>
+		    </div>
+			<div class="panel-body">
+				<br />
+                {{ form.non_field_errors }}
+				<form class="form" method='post' action='.'>
+					{% csrf_token %}
+
+						<div class="form-group">
+						<label for="id_username">Username</label>
+						<input class="form-control" placeholder='Enter your username here' id='id_username' maxlength='254' name='username' type='text' required autofocus='' />
+
+					</div>
+					<div class="form-group">
+						<label for="id_password">Password</label>
+						<input class="form-control" placeholder='Enter your password here' id='id_password' name='password' type='password' required />
+					</div>
+					<br />
+					<button class="btn btn-success btn-sm" type='submit' value='Submit'>Log in</button>
+					<br />
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

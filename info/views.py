@@ -1,20 +1,27 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 from core.shortcuts import reverse_redirect, get_object_or_None
 
 from info.forms import DetailForm
 from info.models import Detail
-
-from rest_framework.renderers import JSONRenderer
 from info.serializers import DetailSerializer
 
+from rest_framework import authentication
+from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.renderers import JSONRenderer
 
+
+@login_required(login_url='/account/login/')
 def home(request):
     args = {}
+
+    if request.user:
+        user = request.user
+        token = Token.objects.get_or_create(user=user)
+        print token[0]
 
     if request.method == 'POST':
         form = DetailForm(request.POST)
@@ -51,11 +58,9 @@ class JSONResponse(HttpResponse):
 
 
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
-def detail_list(request):
-
-    if request.method == 'GET':
-        details = Detail.objects.all()
-        print details
-        serializer = DetailSerializer(details, many=True)
-        return JSONResponse(serializer.data)
+@authentication_classes([authentication.TokenAuthentication])
+def detail_list(request, format=None):
+    details = Detail.objects.all()
+    print request.user
+    serializer = DetailSerializer(details, many=True)
+    return JSONResponse(serializer.data)
