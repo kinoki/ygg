@@ -6,4 +6,4 @@ class Detail(TimeStampedModel):
     name = models.CharField(max_length=128)
 
     def __unicode__(self):
-        return self.name
+        return self.name + ' - created at ' + str(self.create_dt)
