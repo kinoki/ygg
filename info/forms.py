@@ -6,3 +6,7 @@ class DetailForm(forms.ModelForm):
     class Meta:
         model = Detail
         fields = ['name', ]
+
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
+        }

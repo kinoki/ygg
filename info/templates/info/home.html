@@ -4,20 +4,28 @@
 
 {% block content %}
 
-    {% if form.non_field_errors %}
-	    {% for key, value in form.non_field_errors.items %}
-		    {% for error in value %}
-			     {{ error }}
-			{% endfor %}
-        {% endfor %}
-	{% endif %}
+<div class="container">
+    <div class="row">
+        <form method="post" action="{% url 'info:home' %}">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                {% for key, value in form.non_field_errors.items %}
+                    {% for error in value %}
+                         {{ error }}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
 
-	{% for field in form %}
-	    {{ field.label }}
-	    {% if field.errors %}
-            {{ field.errors }}
-	    {% endif %}
-	    {{ field|addcss:"form-control" }}
-    {% endfor %}
-
+            {% for field in form %}
+                {{ field.label }}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+                {{ field|addcss:"form-control" }}
+            {% endfor %}
+            <br />
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
