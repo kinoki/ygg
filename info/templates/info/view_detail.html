@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load core_extras %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+    Hello {{ detail.name }} - created at {{ detail.create_dt }}
+
+    </div>
+</div>
+{% endblock %}
