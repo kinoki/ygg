@@ -23,12 +23,36 @@
 						<input class="form-control" placeholder='Enter your password here' id='id_password' name='password' type='password' required />
 					</div>
 					<br />
-					<button class="btn btn-success btn-sm" type='submit' value='Submit'>Log in</button>
-					<br />
+					<button style="width:100px;" class="btn btn-success btn-sm" type='submit' value='Submit'>Log in</button>
+
+                    <button style="width:100px;" class="btn btn-danger btn-sm" id="loginButton" type="button">Test</button>
 
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+    $("#loginButton").click(function(){
+        var username = $("#id_username").val();
+        var password = $("#id_password").val();
+        $.ajax({
+                type: "POST",
+                url: "http://localhost:8000/api-token-auth/",
+                data: {
+                    "username": username,
+                    "password": password,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                },
+                dataType: "json",
+                success: function(data) {
+                alert(data.token);
+                },
+                error: function (rs, e) {
+                    console.log("error")
+                }
+            });
+    });
+</script>
 {% endblock %}

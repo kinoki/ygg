@@ -28,4 +28,31 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        var user_url = 'http://localhost:8000/info/detail-list'
+        var auth_headers = {
+            Authorization: 'Token ' + '{{ token }}'
+        }
+        var user_ajax_obj = {
+          url : user_url,
+          dataType : 'json',
+          headers: auth_headers,
+          success : function(data) {
+            console.log('authorized user returned');
+            for (var i=0; i < data.length; i++){
+                console.log(data[i]);
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log('error returned from ' + user_url);
+          }
+        };
+        $.ajax(
+          user_ajax_obj
+        );
+    });
+</script>
 {% endblock %}
